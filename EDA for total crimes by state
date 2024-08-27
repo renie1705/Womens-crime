@@ -1,0 +1,19 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Calculate the total number of crimes for each state
+data['Total_Crimes'] = data[['Rape', 'K&A', 'DD', 'AoW', 'AoM', 'DV', 'WT']].sum(axis=1)
+state_crime_data = data.groupby('State')['Total_Crimes'].sum().reset_index()
+
+# Sort data by total crimes
+state_crime_data = state_crime_data.sort_values(by='Total_Crimes', ascending=False)
+
+# Plot a pie chart
+plt.figure(figsize=(10, 10))
+plt.pie(state_crime_data['Total_Crimes'], labels=state_crime_data['State'], autopct='%1.1f%%', startangle=140)
+plt.title('Distribution of Total Crimes by State')
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+plt.show()
