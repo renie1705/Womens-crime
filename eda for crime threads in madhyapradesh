@@ -1,0 +1,28 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Filter data for a specific state or overall trends
+# For example, let's visualize trends for 'Madhya Pradesh'
+state_data = data[data['State'] == 'MADHYA PRADESH']
+
+# Set the 'Year' as the index
+state_data.set_index('Year', inplace=True)
+
+# Select crime types to visualize
+crime_types = ['Rape', 'K&A', 'DD', 'AoW', 'AoM', 'DV', 'WT']
+
+# Plot an area chart
+plt.figure(figsize=(12, 8))
+state_data[crime_types].plot(kind='area', stacked=True, colormap='viridis', alpha=0.6)
+
+# Add titles and labels
+plt.title('Crime Trends in Madhya Pradesh', fontsize=16)
+plt.xlabel('Year', fontsize=14)
+plt.ylabel('Number of Crimes', fontsize=14)
+plt.legend(title='Crime Type')
+
+# Show the plot
+plt.show()
