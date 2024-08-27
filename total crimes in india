@@ -1,0 +1,71 @@
+mport pandas as pd
+import geopandas as gpd
+import matplotlib.pyplot as plt
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Summarize the total number of crimes by state
+data['Total_Crimes'] = data[['Rape', 'K&A', 'DD', 'AoW', 'AoM', 'DV', 'WT']].sum(axis=1)
+state_crime_data = data.groupby('State')['Total_Crimes'].sum().reset_index()
+
+# Load a shapefile of India with state boundaries
+# Download a shapefile and replace 'india_shapefile.shp' with the actual path
+!wget -O india_shapefile.zip "https://geodata.ucdavis.edu/gadm/gadm4.1/shp/gadm41_IND_shp.zip" # Download shapefile
+!unzip india_shapefile.zip # Unzip the file
+india_map = gpd.read_file('gadm41_IND_1.shp') # Load the shapefile
+
+# Correct the state names in the shapefile to match the crime data
+state_name_mapping = {
+    'Andaman and Nicobar': 'A & N ISLANDS',
+    'Andhra Pradesh': 'ANDHRA PRADESH',
+    'Arunachal Pradesh': 'ARUNACHAL PRADESH',
+    'Assam': 'ASSAM',
+    'Bihar': 'BIHAR',
+    'Chandigarh': 'CHANDIGARH',
+    'Chhattisgarh': 'CHHATTISGARH',
+    'Dadra and Nagar Haveli and Daman and Diu': 'D & N HAVELI', 
+    'Delhi': 'DELHI',
+    'Goa': 'GOA',
+    'Gujarat': 'GUJARAT',
+    'Haryana': 'HARYANA',
+    'Himachal Pradesh': 'HIMACHAL PRADESH',
+    'Jammu and Kashmir': 'JAMMU & KASHMIR',
+    'Jharkhand': 'JHARKHAND',
+    'Karnataka': 'KARNATAKA',
+    'Kerala': 'KERALA',
+    'Ladakh': 'LADAKH',
+    'Lakshadweep': 'LAKSHADWEEP',
+    'Madhya Pradesh': 'MADHYA PRADESH',
+    'Maharashtra': 'MAHARASHTRA',
+    'Manipur': 'MANIPUR',
+    'Meghalaya': 'MEGHALAYA',
+    'Mizoram': 'MIZORAM',
+    'Nagaland': 'NAGALAND',
+    'Odisha': 'ODISHA',
+    'Puducherry': 'PUDUCHERRY',
+    'Punjab': 'PUNJAB',
+    'Rajasthan': 'RAJASTHAN',
+    'Sikkim': 'SIKKIM',
+    'Tamil Nadu': 'TAMIL NADU',
+    'Telangana': 'TELANGANA',
+    'Tripura': 'TRIPURA',
+    'Uttar Pradesh': 'UTTAR PRADESH',
+    'Uttarakhand': 'UTTARAKHAND',
+    'West Bengal': 'WEST BENGAL'
+}
+india_map['State'] = india_map['NAME_1'].map(state_name_mapping)
+
+# Merge crime data with the geographical data
+merged_data = india_map.set_index('State').join(state_crime_data.set_index('State'))
+
+# Plot the choropleth map
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+merged_data.plot(column='Total_Crimes', cmap='OrRd', linewidth=0.8, ax=ax, edgecolor='0.8', legend=True)
+
+# Add titles and labels
+plt.title('Total Crimes by State in India', fontsize=16)
+plt.axis('off')
+
+# Show the plot
+plt.show()
