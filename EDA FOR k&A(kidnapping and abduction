@@ -1,0 +1,24 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Choose two crime types to visualize, e.g., 'Rape' vs 'K&A'
+x_crime_type = 'Rape'
+y_crime_type = 'K&A'
+
+# Set up the matplotlib figure
+plt.figure(figsize=(10, 6))
+
+# Create a scatter plot
+sns.scatterplot(x=x_crime_type, y=y_crime_type, data=data, hue='State', palette='viridis', legend=False)
+
+# Add titles and labels
+plt.title(f'{x_crime_type} vs {y_crime_type}', fontsize=16)
+plt.xlabel(x_crime_type, fontsize=14)
+plt.ylabel(y_crime_type, fontsize=14)
+
+# Show the plot
+plt.show()
