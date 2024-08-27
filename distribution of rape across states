@@ -1,0 +1,27 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Choose a specific crime type to visualize, e.g., 'Rape'
+crime_type = 'Rape'
+
+# Set up the matplotlib figure
+plt.figure(figsize=(12, 8))
+
+# Create a violin plot
+sns.violinplot(x='State', y=crime_type, data=data, palette='muted')
+
+# Rotate x-axis labels for better readability
+plt.xticks(rotation=90)
+
+# Add titles and labels
+plt.title(f'Distribution of {crime_type} Across States', fontsize=16)
+plt.xlabel('States', fontsize=14)
+plt.ylabel('Number of Crimes', fontsize=14)
+
+# Show the plot
+plt.tight_layout()
+plt.show()
