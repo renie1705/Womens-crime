@@ -6,3 +6,9 @@ dataset = pd.read_csv('/CrimesOnWomenData.csv')
 
 # Display the first few rows of the dataset
 print(dataset.head())
+
+# Summary of dataset
+summary = dataset.describe(include='all')
+head = dataset.head()
+
+head, summary
