@@ -1,0 +1,30 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset
+data = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Summarize the total number of crimes by state
+# Assuming 'Rape', 'K&A', 'DD', 'AoW', 'AoM', 'DV', 'WT' are types of crimes
+data['Total_Crimes'] = data[['Rape', 'K&A', 'DD', 'AoW', 'AoM', 'DV', 'WT']].sum(axis=1)
+
+# Group by state and sum the total crimes
+state_crime_data = data.groupby('State')['Total_Crimes'].sum().reset_index()
+
+# Sort the data by total crimes
+state_crime_data = state_crime_data.sort_values(by='Total_Crimes', ascending=False)
+
+# Set up the matplotlib figure
+plt.figure(figsize=(12, 8))
+
+# Create a bar plot
+sns.barplot(x='Total_Crimes', y='State', data=state_crime_data, palette='viridis')
+
+# Add titles and labels
+plt.title('Total Crimes by State', fontsize=16)
+plt.xlabel('Number of Crimes', fontsize=14)
+plt.ylabel('States', fontsize=14)
+
+# Show the plot
+plt.show()
