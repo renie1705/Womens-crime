@@ -1,0 +1,26 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Load the dataset (ensure the file path is correct)
+dataset = pd.read_csv('/CrimesOnWomenData.csv')
+# Display the first few rows of the dataset to check column names
+print(dataset.head())
+
+# Check the column names
+print(dataset.columns)
+
+# Replace 'Unnamed: 5' with the actual column name from your dataset
+# If the column name is incorrect, use the appropriate column name
+# The example dataset has a column named 'Rape'
+column_name = 'Rape'  # Replace with the correct column name
+
+plt.figure(figsize=(14, 7))
+
+# Plotting the barplot using the correct column name
+sns.barplot(x='State', y=column_name, data=dataset.sort_values(by=column_name, ascending=False))
+plt.xticks(rotation=90)
+plt.title(f'{column_name} in Different States')
+plt.xlabel('States')
+plt.ylabel('Number of Crimes')
+plt.show()
