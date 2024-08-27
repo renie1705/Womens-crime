@@ -12,3 +12,4 @@ summary = dataset.describe(include='all')
 head = dataset.head()
 
 head, summary
+
