@@ -1,0 +1,8 @@
+import pandas as pd
+import pandas as pd
+
+# Replace 'path/to/your/file.csv' with the actual path
+dataset = pd.read_csv('/CrimesOnWomenData.csv')
+
+# Display the first few rows of the dataset
+print(dataset.head())
